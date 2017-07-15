@@ -1,0 +1,47 @@
+header {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.tabs {
+  min-width: 500px;
+}
+
+.tab {
+  font-size: 20px;
+  display: inline-block;
+  padding: 6px 30px;
+  margin-left: 15px;
+  margin-right: 25px;
+  border: solid lightgrey 1px;
+}
+
+.tab:hover:not(.true){
+  background: grey;
+}
+
+.tab:hover{
+  cursor: pointer;
+}
+
+.true {
+  background: lightblue;
+}
+
+.divide {
+  border: solid lightgrey 1px;
+  margin-left: 10px;
+  width: 800px;
+}
+
+.json-display {
+  width: 600px;
+  height: 200px;
+  margin-top: 30px;
+  margin-left: 15px;
+  resize: none;
+  border-color: lightgrey;
+  border-width: 2px;
+  font-size: 16px;
+  padding: 10px;
+}
