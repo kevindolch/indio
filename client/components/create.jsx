@@ -5,49 +5,55 @@ class Create extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      inputjsx: [],
-      form: {inputs: []},
-    };
   }
 
   subDisplay(location, keyArr) {
     var that = this;
-    var options;
-    switch (location.type) {
-      case "text":
-      case "yes/no":
-        options = <select default="equals" className="condition type">
-                    <option value="equals">Equals</option>
-                  </select>
-        break;
-      case "number":
-        options = <select default="equals" className="condition type">
-                    <option value="equals">Equals</option>
-                    <option value="greater than">Greater Than</option>
-                    <option value="less than">Less Than</option>
-                  </select>
-        break;
-      }
     var subInput = location.subs.map(function(input, idx){
       var tempKeyArr = keyArr.slice();
       tempKeyArr.push(idx);
+      var options;
+      switch (location.type) {
+        case "text":
+        case "yes/no":
+          options = <select default="equals" className="condition type" value={input.conditionType}>
+                      <option value="equals">Equals</option>
+                    </select>
+          break;
+        case "number":
+          options = <select default="equals" className="condition type"  value={input.conditionType}>
+                      <option value="equals">Equals</option>
+                      <option value="greater than">Greater Than</option>
+                      <option value="less than">Less Than</option>
+                    </select>
+          break;
+        }
       return(
       <div className="child" key={idx}>
         <div onChange={that.handleInputChange.bind(that, tempKeyArr)}>
           <div>Condition</div>
-          {options}
+          {location.type==="number" ?
+            <select default="equals" className="condition type"  value={input.conditionType}>
+              <option value="equals">Equals</option>
+              <option value="greater than">Greater Than</option>
+              <option value="less than">Less Than</option>
+            </select> :
+            <select default="equals" className="condition type" value={input.conditionType}>
+              <option value="equals">Equals</option>
+            </select>}
           <input
+            value={input.condition}
             type="text"
             className="condition"
           />
           <div>Question</div>
           <input
+            value={input.question}
             type="text"
             className="question"
           />
           <div>Type</div>
-          <select default="text" className="type">
+          <select default="text" className="type" value={input.type}>
             <option value="text">Text</option>
             <option value="number">Number</option>
             <option value="yes/no">Yes / No</option>
@@ -57,21 +63,41 @@ class Create extends Component {
         <div className="sub-button" onClick={that.handleAddSub.bind(that, tempKeyArr)}>
         Add Sub-Input
         </div>
+        <div className="delete-button" onClick={that.handleDelete.bind(that, tempKeyArr)}>
+        Delete
+        </div>
         {that.subDisplay(location.subs[idx], tempKeyArr)}
       </div>)});
     return subInput;
   }
 
+  handleDelete(keyArr, e) {
+    e.preventDefault();
+    let newForm = Object.assign({}, this.props.form);
+    if(keyArr.length === 1) {
+      newForm.inputs.splice(keyArr[0], 1);
+    }
+    else {
+      var location = newForm.inputs[keyArr[0]];
+    var i = 1;
+    while(i < keyArr.length-1) {
+      location = location.subs[keyArr[i]];
+      i += 1;
+    }
+    location.subs.splice(keyArr[i], 1);
+  }
+    this.props.update(newForm);
+  }
+
   handleInputChange(keyArr, e) {
     e.preventDefault();
-    debugger;
-    let newForm = Object.assign({}, this.state.form);
-    var location = newForm.inputs[keyArr[0]]
-    var i = 1
-      while(i < keyArr.length) {
-        location = location.subs[keyArr[i]];
-        i += 1;
-      }
+    let newForm = Object.assign({}, this.props.form);
+    var location = newForm.inputs[keyArr[0]];
+    var i = 1;
+    while(i < keyArr.length) {
+      location = location.subs[keyArr[i]];
+      i += 1;
+    }
     if(e.target.className==="question"){
       location.question = e.target.value;
     }
@@ -84,11 +110,11 @@ class Create extends Component {
     else if(e.target.className==="condition") {
       location.condition = e.target.value;
     }
-    this.setState({form: newForm});
+    this.props.update(newForm);
 }
 
 handleAddSub(keyArr, e){
-    let newForm = Object.assign({}, this.state.form);
+    let newForm = Object.assign({}, this.props.form);
     var i = 1;
     var location = newForm.inputs[keyArr[0]];
     while(i < keyArr.length) {
@@ -96,19 +122,24 @@ handleAddSub(keyArr, e){
       i+=1;
     }
     location.subs.push({conditionType: "equals", condition: "", question: "", type: "text", subs: []})
-    this.setState({ form: newForm });
+    this.props.update(newForm);
   }
 
   handleAddInput(e){
     e.preventDefault();
-    var currentFormInputs = this.state.form.inputs;
+    let newForm = Object.assign({}, this.props.form);
+    var currentFormInputs = newForm.inputs;
     currentFormInputs.push({question: "", type: "text", subs: []});
-    this.setState({ form: {inputs: currentFormInputs}});
+    this.props.update(newForm);
+  }
+
+  componentWillReceiveProps(props){
+    this.forceUpdate();
   }
 
   render(){
     var that = this;
-    var form = this.state.form.inputs.map(function(input, idx){
+    var form = this.props.form.inputs.map(function(input, idx){
       var keyArr = [];
       keyArr.push(idx);
       return(
@@ -116,11 +147,12 @@ handleAddSub(keyArr, e){
         <div onChange={that.handleInputChange.bind(that, keyArr)}>
           <div>Question</div>
           <input
+            value={input.question}
             type="text"
             className="question"
           />
           <div>Type</div>
-          <select default="text" className="type">
+          <select default="text" className="type" value={input.type}>
             <option value="text">Text</option>
             <option value="number">Number</option>
             <option value="yes/no">Yes / No</option>
@@ -130,7 +162,10 @@ handleAddSub(keyArr, e){
         <div className="sub-button" onClick={that.handleAddSub.bind(that, keyArr)}>
         Add Sub-Input
         </div>
-        {that.subDisplay(that.state.form.inputs[idx], keyArr)}
+        <div className="delete-button" onClick={that.handleDelete.bind(that, keyArr)}>
+        Delete
+        </div>
+        {that.subDisplay(that.props.form.inputs[idx], keyArr)}
       </div>)});
     return(
       <div>

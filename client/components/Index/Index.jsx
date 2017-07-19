@@ -7,6 +7,7 @@ class IndexComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      form: {inputs: []},
       active: 0,
     };
   }
@@ -20,17 +21,21 @@ class IndexComponent extends Component {
 
   }
 
+  onUpdate(form) {
+    this.setState({form: form});
+  }
+
   render() {
     var activeWindow;
     switch (this.state.active) {
       case 0:
-        activeWindow = <Create />
+        activeWindow = <Create form={this.state.form} update={this.onUpdate.bind(this)}/>
         break;
       case 1:
-        activeWindow = <Preview />
+        activeWindow = <Preview form={this.state.form}/>
         break;
       case 2:
-        activeWindow = <Export />
+        activeWindow = <Export form={this.state.form}/>
       }
     return (
       <div>
