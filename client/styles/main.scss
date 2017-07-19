@@ -45,3 +45,28 @@ header {
   font-size: 16px;
   padding: 10px;
 }
+
+.input-button {
+  display: inline-block;
+  border: solid lightgrey 2px;
+  margin-top: 50px;
+  margin-left: 20px;
+  text-align: center;
+  padding: 6px 30px;
+  background: #F6F7F9;
+}
+
+.input-button:hover{
+  background: #dddfe2;
+  cursor: pointer;
+}
+
+.parent{
+  position: relative;
+  margin-left: 20px;
+}
+
+.child{
+  position: relative;
+  left: 20px;
+}
