@@ -6,8 +6,12 @@ import Export from '../export.jsx';
 class IndexComponent extends Component {
   constructor(props) {
     super(props);
+    var form = {inputs: []};
+    if(typeof localStorage.state !== 'undefined'){
+      form = JSON.parse(localStorage.state);
+    }
     this.state = {
-      form: {inputs: []},
+      form: form,
       active: 0,
     };
   }
@@ -25,6 +29,10 @@ class IndexComponent extends Component {
     this.setState({form: form});
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    localStorage.state = JSON.stringify(this.state.form);
+}
+
   render() {
     var activeWindow;
     switch (this.state.active) {
@@ -32,10 +40,10 @@ class IndexComponent extends Component {
         activeWindow = <Create form={this.state.form} update={this.onUpdate.bind(this)}/>
         break;
       case 1:
-        activeWindow = <Preview form={this.state.form}/>
+        activeWindow = <Preview form={this.state.form} update={this.onUpdate.bind(this)}/>
         break;
       case 2:
-        activeWindow = <Export form={this.state.form}/>
+        activeWindow = <Export form={this.state.form} />
       }
     return (
       <div>

@@ -1,6 +1,7 @@
 header {
   font-size: 28px;
   font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .tabs {
@@ -37,7 +38,7 @@ header {
 .json-display {
   width: 600px;
   height: 200px;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-left: 15px;
   resize: none;
   border-color: lightgrey;
@@ -49,8 +50,8 @@ header {
 .input-button {
   display: inline-block;
   border: solid lightgrey 2px;
-  margin-top: 50px;
   margin-left: 20px;
+  margin-top: 20px;
   text-align: center;
   padding: 6px 30px;
   background: #F6F7F9;
@@ -61,6 +62,17 @@ header {
   cursor: pointer;
 }
 
+.sub-box, .input-box{
+  width: 400px;
+  height: 120px;
+  border: solid lightgrey 2px;
+  margin-top: 20px;
+}
+
+.sub-box{
+  height: 152px;
+}
+
 .parent{
   position: relative;
   margin-left: 20px;
@@ -69,4 +81,67 @@ header {
 .child{
   position: relative;
   left: 20px;
+}
+
+.question-title, .type-title, .condition-title{
+  font-size: 18px;
+  margin-top: 8px;
+  margin-left: 12px;
+  display: inline-block;
+}
+
+.question, .type{
+  font-size: 14px;
+  width: 300px;
+  margin-left: 8px;
+}
+
+.type{
+  margin-left: 36px;
+}
+
+.condition-type{
+  width: 160px;
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+.condition{
+  margin-left: 8px;
+  width: 124px;
+  font-size: 14px;
+}
+
+.sub-button, .delete-button{
+  display: inline-block;
+  margin-top: 20px;
+  border: solid grey 1px;
+  background: #F6F7F9;
+  padding: 5px;
+}
+
+.sub-button{
+  margin-left: 85px;
+}
+
+.delete-button{
+  margin-left: 138px;
+}
+
+.sub-button:hover, .delete-button:hover{
+  cursor: pointer;
+  background: #dddfe2;
+}
+
+.question-display{
+  font-size: 18px;
+  position: relative;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.answer{
+  width: 150px;
+  font-size: 14px;
+  margin-top: 10px;
 }

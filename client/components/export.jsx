@@ -10,7 +10,6 @@ class Export extends Component {
   }
 
   render(){
-    debugger;
     return(
       <div>
       <textarea className="json-display" readOnly="true" value={JSON.stringify(this.props.form)} />
